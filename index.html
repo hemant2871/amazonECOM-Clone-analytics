@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Clone - Premium E-Commerce Analytics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for premium typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <!-- logo -->
+            <div class="nav-logo border" id="nav-logo-btn">
+                <div class="logo"></div>
+            </div>
+
+            <!-- address -->
+            <div class="nav address border" id="nav-address-btn">
+                <p class="add-first">Deliver to</p>
+                <div class="add-icon">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <p class="add-two" id="active-location">India</p>
+                </div>
+            </div>
+
+            <!-- search -->
+            <div class="nav-search">
+                <select class="select-search" id="search-category-select">
+                    <option value="All">All</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Kitchen">Kitchen</option>
+                    <option value="Furniture">Furniture</option>
+                    <option value="Fitness">Fitness</option>
+                    <option value="Apparel">Apparel</option>
+                    <option value="Automotive">Automotive</option>
+                </select>
+                <input placeholder="Search Amazon" class="search-input" id="main-search-input">
+                <div class="search-icon" id="main-search-btn"><i class="fa-solid fa-magnifying-glass"></i></div>
+            </div>
+
+            <!-- nav sign in -->
+            <div class="nav-signin border" id="nav-signin-btn">
+                <p><span id="user-greeting-span">Hello, Sign in</span></p>
+                <p class="nav-second" id="user-action-label">Account & Lists</p>
+            </div>
+
+            <!-- return and order box -->
+            <div class="nav-return border" id="nav-orders-btn">
+                <p><span>Returns</span></p>
+                <p class="nav-second">& Orders</p>
+            </div>
+
+            <!-- cart box -->
+            <div class="nav-cart border" id="nav-cart-btn">
+                <div class="cart-icon-container">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-count-badge">0</span>
+                </div>
+                Cart    
+            </div>
+        </div>
+
+        <!-- navigation panel -->
+        <div class="panel">
+            <div class="panel-all border" id="panel-all-btn">
+                <i class="fa-solid fa-bars"></i>
+                All
+            </div>
+            <div class="panel-option">
+                <p class="panel-nav-link" data-category="All">Today's Deals</p>
+                <p class="panel-nav-link" data-category="Electronics">Electronics</p>
+                <p class="panel-nav-link" data-category="Kitchen">Kitchen & Dining</p>
+                <p class="panel-nav-link" data-category="Furniture">Furniture</p>
+                <p class="panel-nav-link" data-category="Fitness">Fitness</p>
+                <p class="panel-nav-link" data-category="Apparel">Apparel</p>
+                <p class="panel-nav-link" data-category="Automotive">Automotive</p>
+            </div>
+            <div class="panel-deals"> 
+                Shop deals on Smart Speakers
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN SPA SCREEN CONTAINER -->
+    <main id="app-viewport">
+
+        <!-- 1. HOME SCREEN -->
+        <section id="screen-home" class="spa-screen active">
+            <!-- Hero banner with navigation link -->
+            <div class="hero-section">
+                <div class="hero-message">
+                    <p>You are on amazon.com. You can also shop on Amazon India for millions of products with fast local delivery. 
+                        <a href="#" id="change-loc-hero">Click here to go to amazon.in</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Category/Product Grid Section -->
+            <div class="shop-section" id="home-products-grid">
+                <!-- Products will be rendered dynamically here by app.js -->
+                <div class="loading-spinner">Loading products...</div>
+            </div>
+        </section>
+
+        <!-- 2. SEARCH SCREEN -->
+        <section id="screen-search" class="spa-screen">
+            <div class="search-results-container">
+                <div class="search-header-bar">
+                    <h2 id="search-title-text">Search Results</h2>
+                    <span id="search-results-count">0 items found</span>
+                </div>
+                <div class="search-results-grid" id="search-products-grid">
+                    <!-- Dynamic search results -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. PRODUCT DETAIL SCREEN -->
+        <section id="screen-product-detail" class="spa-screen">
+            <div class="detail-container" id="product-detail-view">
+                <!-- Renders dynamically in app.js -->
+            </div>
+        </section>
+
+        <!-- 4. CART SCREEN -->
+        <section id="screen-cart" class="spa-screen">
+            <div class="cart-layout-container">
+                <div class="cart-items-panel">
+                    <h2>Shopping Cart</h2>
+                    <hr class="divider">
+                    <div id="cart-items-list">
+                        <!-- Dynamic items -->
+                    </div>
+                </div>
+                <div class="cart-checkout-panel">
+                    <div class="subtotal-box">
+                        <p><i class="fa-solid fa-circle-check check-icon"></i> Your order qualifies for FREE Shipping.</p>
+                        <hr class="divider">
+                        <h3>Subtotal (<span id="cart-summary-count">0</span> items): <span class="price-symbol">₹</span><span id="cart-summary-subtotal" class="price-value">0.00</span></h3>
+                        <button class="primary-btn btn-full" id="cart-checkout-btn">Proceed to Buy</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. CHECKOUT SCREEN -->
+        <section id="screen-checkout" class="spa-screen">
+            <div class="checkout-container">
+                <div class="checkout-left">
+                    <h2>Checkout (Funnel Step <span id="checkout-step-number">1</span> of 3)</h2>
+                    
+                    <!-- Progress Bar -->
+                    <div class="checkout-progress">
+                        <div class="progress-bar-fill" id="checkout-progress-fill" style="width: 33%"></div>
+                    </div>
+
+                    <!-- STEP 1: SHIPPING INFORMATION -->
+                    <div id="step-shipping" class="checkout-step-panel active">
+                        <h3>1. Enter Shipping Address</h3>
+                        <form id="shipping-form" class="checkout-form">
+                            <div class="form-group">
+                                <label for="ship-name">Full Name</label>
+                                <input type="text" id="ship-name" required placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="ship-address">Street Address</label>
+                                <input type="text" id="ship-address" required placeholder="Flat, House no., Apartment, Street">
+                            </div>
+                            <div class="form-group">
+                                <label for="ship-city">City</label>
+                                <input type="text" id="ship-city" required placeholder="Mumbai">
+                            </div>
+                            <div class="form-group">
+                                <label for="ship-state">State / Province</label>
+                                <input type="text" id="ship-state" required placeholder="Maharashtra">
+                            </div>
+                            <div class="form-group">
+                                <label for="ship-zip">ZIP / Postal Code</label>
+                                <input type="text" id="ship-zip" required placeholder="400001">
+                            </div>
+                            <button type="submit" class="primary-btn mt-10">Use this address & Proceed to Payment</button>
+                        </form>
+                    </div>
+
+                    <!-- STEP 2: PAYMENT METHOD -->
+                    <div id="step-payment" class="checkout-step-panel">
+                        <h3>2. Select Payment Method</h3>
+                        <form id="payment-form" class="checkout-form">
+                            <div class="payment-methods-list">
+                                <label class="payment-option-label">
+                                    <input type="radio" name="payment-method-radio" value="UPI" checked>
+                                    <span>UPI Payment (GPay, PhonePe, Paytm)</span>
+                                </label>
+                                <div id="upi-details-field" class="payment-fields-sub">
+                                    <input type="text" id="pay-upi-id" placeholder="example@okaxis" required>
+                                </div>
+
+                                <label class="payment-option-label">
+                                    <input type="radio" name="payment-method-radio" value="Credit Card">
+                                    <span>Credit / Debit Card</span>
+                                </label>
+                                <div id="card-details-field" class="payment-fields-sub" style="display: none;">
+                                    <input type="text" id="pay-card-num" placeholder="1234 5678 1234 5678" pattern="\d{16}" title="16-digit card number">
+                                    <div class="row">
+                                        <input type="text" id="pay-card-expiry" placeholder="MM/YY" style="width: 60%">
+                                        <input type="password" id="pay-card-cvv" placeholder="CVV" style="width: 35%" maxlength="3">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="primary-btn mt-10">Use this payment method & Review Order</button>
+                        </form>
+                    </div>
+
+                    <!-- STEP 3: ORDER REVIEW -->
+                    <div id="step-review" class="checkout-step-panel">
+                        <h3>3. Review Items and Shipping</h3>
+                        <div class="review-details">
+                            <div class="review-block">
+                                <strong>Shipping To:</strong>
+                                <p id="review-shipping-address"></p>
+                            </div>
+                            <div class="review-block">
+                                <strong>Payment Method:</strong>
+                                <p id="review-payment-method"></p>
+                            </div>
+                            <hr class="divider">
+                            <div class="review-items-list" id="review-items-container">
+                                <!-- Dynamic review items -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkout-right">
+                    <div class="order-summary-box">
+                        <h3>Order Summary</h3>
+                        <hr class="divider">
+                        <div class="summary-line">
+                            <span>Items:</span>
+                            <span>₹<span id="summary-subtotal">0.00</span></span>
+                        </div>
+                        <div class="summary-line">
+                            <span>Shipping & Handling:</span>
+                            <span>₹<span id="summary-shipping">0.00</span></span>
+                        </div>
+                        <div class="summary-line">
+                            <span>Estimated Tax (18% GST):</span>
+                            <span>₹<span id="summary-tax">0.00</span></span>
+                        </div>
+                        <hr class="divider">
+                        <div class="summary-line total-line">
+                            <span>Order Total:</span>
+                            <span>₹<span id="summary-total">0.00</span></span>
+                        </div>
+                        <button class="primary-btn btn-full mt-20" id="place-order-btn" style="display: none;">Place Your Order & Pay</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. ORDER CONFIRMATION SCREEN -->
+        <section id="screen-confirmation" class="spa-screen">
+            <div class="confirmation-container">
+                <div class="confirmation-header">
+                    <i class="fa-solid fa-circle-check success-icon"></i>
+                    <h2>Thank you, your order has been placed!</h2>
+                    <p>An email confirmation has been sent to you. We'll update you as shipping details change.</p>
+                </div>
+                <div class="confirmation-details-box">
+                    <h3>Order Details</h3>
+                    <p><strong>Order ID / Transaction ID:</strong> <span id="conf-order-id" class="highlight-text"></span></p>
+                    <p><strong>Delivery Date:</strong> <span id="conf-delivery-date" class="highlight-text"></span> (Estimated 4 Business Days)</p>
+                    <hr class="divider">
+                    <div class="conf-lines">
+                        <p>Total Paid: <strong>₹<span id="conf-total">0.00</span></strong></p>
+                        <p>Payment Status: <span class="badge status-paid">Paid</span></p>
+                    </div>
+                </div>
+                <button class="secondary-btn mt-20" id="conf-home-btn">Continue Shopping</button>
+            </div>
+        </section>
+
+        <!-- 7. LOGIN SCREEN -->
+        <section id="screen-login" class="spa-screen">
+            <div class="auth-box">
+                <div class="auth-logo"></div>
+                <form id="login-form" class="auth-form">
+                    <h2>Sign-In</h2>
+                    <div class="form-group">
+                        <label for="login-email">Email or mobile phone number</label>
+                        <input type="email" id="login-email" required placeholder="e.g. user@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required placeholder="At least 6 characters">
+                    </div>
+                    <button type="submit" class="primary-btn btn-full mt-10">Sign In</button>
+                    <p class="auth-terms">By continuing, you agree to Amazon's Conditions of Use and Privacy Notice.</p>
+                </form>
+                <div class="auth-divider">
+                    <h5>New to Amazon?</h5>
+                </div>
+                <button class="secondary-btn btn-full" id="go-to-signup-btn">Create your Amazon account</button>
+            </div>
+        </section>
+
+        <!-- 8. SIGNUP SCREEN -->
+        <section id="screen-signup" class="spa-screen">
+            <div class="auth-box">
+                <div class="auth-logo"></div>
+                <form id="signup-form" class="auth-form">
+                    <h2>Create Account</h2>
+                    <div class="form-group">
+                        <label for="signup-name">Your name</label>
+                        <input type="text" id="signup-name" required placeholder="First and last name">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email or mobile number</label>
+                        <input type="email" id="signup-email" required placeholder="user@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" required placeholder="At least 6 characters">
+                    </div>
+                    <button type="submit" class="primary-btn btn-full mt-10">Create Account</button>
+                </form>
+                <div class="auth-divider">
+                    <h5>Already have an account?</h5>
+                </div>
+                <button class="secondary-btn btn-full" id="go-to-login-btn">Sign In</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="foot-panel-one" id="back-to-top-btn">
+            Back to Top
+        </div>
+
+        <div class="foot-panel-two">
+            <ul>
+                <p>Get to Know us</p>
+                <a>About us</a>
+                <a>Careers</a>
+                <a>Press Releases</a>
+                <a>Amazon Science</a>
+            </ul>
+
+            <ul>
+                <p>Connect with Us</p>
+                <a>Facebook</a>
+                <a>Twitter</a>
+                <a>Instagram</a>
+            </ul>
+
+            <ul>
+                <p>Make money with us</p>
+                <a>Sell on Amazon</a>
+                <a>Become an Affiliate</a>
+                <a>Fulfilment by Amazon</a>
+                <a>Advertise Your Products</a>
+                <a>Amazon Pay on Merchants</a>
+            </ul>
+
+            <ul>
+                <p>Let Us Help You</p>
+                <a>COVID-19 and Amazon</a>
+                <a>Your Account</a>
+                <a>Returns Centre</a>
+                <a>Help</a>
+            </ul>
+        </div>
+
+        <div class="foot-panel-three">
+            <div class="logo"></div>
+        </div>
+
+        <div class="foot-panel-four">
+            <div class="pages">
+                <a>Conditions of Use</a>
+                <a>Privacy Notice</a>
+                <a>Your Ads Privacy Choices</a>
+            </div>
+            <div class="copyright">
+                © 1996-2026, Amazon.com, Inc. or its affiliates
+            </div>
+        </div>
+    </footer>
+
+    <!-- DEVELOPER-ONLY ANALYTICS CONSOLE PANEL -->
+    <div id="analytics-debug-panel" class="debug-panel minimized" style="display: none;">
+        <div class="debug-panel-header">
+            <h4><i class="fa-solid fa-chart-line"></i> Analytics Debug Console</h4>
+            <div class="debug-panel-controls">
+                <button id="clear-debug-logs" title="Clear Event Logs"><i class="fa-solid fa-trash-can"></i></button>
+                <button id="toggle-debug-panel" title="Minimize/Maximize"><i class="fa-solid fa-chevron-up"></i></button>
+            </div>
+        </div>
+        <div class="debug-panel-meta">
+            <span><strong>GTM Status:</strong> <span id="debug-gtm-status" class="status-indicator">Pending</span></span>
+            <span><strong>DataLayer Events Fired:</strong> <span id="debug-event-count">0</span></span>
+        </div>
+        <div class="debug-panel-body" id="debug-logs-container">
+            <div class="debug-log-empty">No events captured yet. Perform actions to see dataLayer pushes.</div>
+        </div>
+    </div>
+
+    <!-- Main Client SPA logic Script -->
+    <script type="module" src="src/app.js"></script>
+</body>
+</html>
